@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Prompting Principles — Interactive Bubble</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --pink:#e72582;
+      --grey:#abb5bf;
+      --navy:#1f2a52;
+      --cyan:#00bec7;
+      --light-cyan:#d2f0f0;
+      --darker-blue:#2e4d6b;
+      --panel:#ffffff;
+      --shadow:0 20px 35px rgba(16,24,40,.18);
+      --radius:18px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      background: #e8eef3 url("Background.png") center/cover no-repeat fixed;
+      color:var(--navy);
+    }
+
+    .wrap{
+      min-height:100vh;
+      display:grid;
+      grid-template-columns: minmax(280px,420px) 1fr;
+      gap:24px;
+      align-items:start;
+      padding:42px clamp(16px,6vw,56px);
+    }
+
+    .stack{
+      display:flex; flex-direction:column; gap:18px;
+    }
+
+    .row{
+      background:var(--darker-blue);
+      color:#fff;
+      border-radius:20px;
+      padding:20px 22px;
+      display:flex; align-items:center; justify-content:space-between;
+      cursor:pointer;
+      transition:transform .15s ease, background .2s ease;
+      outline:none; border:none;
+      font-weight:600;
+      font-size:1.05rem;
+    }
+    .row:hover{ transform:translateY(-2px); background:var(--cyan); color:var(--navy); }
+    .row[aria-expanded="true"]{
+      background:var(--pink);
+      color:#fff;
+    }
+
+    .title{
+      font-family:'Inter', sans-serif;
+      font-weight:700;
+    }
+
+    .kebab{ display:inline-grid; grid-auto-flow:column; gap:6px; }
+    .dot{ width:6px; height:6px; border-radius:50%; background:#fff; opacity:.85 }
+
+    /* Bubble */
+    .stage{ position:relative; min-height:320px; }
+    .bubble{
+      position:absolute; max-width:min(720px, 80vw);
+      background:var(--panel);
+      border-radius:20px;
+      box-shadow:var(--shadow);
+      padding:26px 28px;
+      opacity:0; visibility:hidden;
+      transition:opacity .18s ease, transform .18s ease, top .18s ease;
+    }
+    .bubble.visible{ opacity:1; visibility:visible; }
+
+    .bubble h2{
+      margin:.1rem 0 .6rem;
+      font-size:clamp(20px,2.2vw,28px);
+      font-weight:800;
+      color:var(--navy);
+    }
+    .bubble p{
+      margin:.35rem 0;
+      line-height:1.6;
+      color:var(--darker-blue);
+      font-weight:400;
+    }
+
+    .bubble::before{
+      content:""; position:absolute; left:-14px; top:28px;
+      width:0; height:0; border:14px solid transparent; border-right-color:var(--panel);
+      filter:drop-shadow(-2px 2px 2px rgba(16,24,40,.15));
+    }
+
+    @media (max-width: 900px){
+      .wrap{ grid-template-columns:1fr; }
+      .stage{ min-height:280px; }
+      .bubble{ position:relative; inset:auto; margin-top:8px; }
+      .bubble::before{ display:none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="stack">
+      <button class="row" aria-expanded="true" data-title="Break Down the Task" data-body="Instead of trying to generate an entire 10,000‑word document in one go, generate it in smaller chunks. This lets you refine each part before moving on, ensuring accuracy.">
+        <span class="title">Break Down the Task</span>
+        <span class="kebab" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
+      </button>
+      <button class="row" aria-expanded="false" data-title="Sequential Prompting" data-body="Build your document iteratively. Generate an introduction, then use it as context for generating the next section.">
+        <span class="title">Sequential Prompting</span>
+        <span class="kebab" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
+      </button>
+      <button class="row" aria-expanded="false" data-title="Provide Context" data-body="For each section, feed the AI the previous sections as context to avoid repetition and ensure continuity.">
+        <span class="title">Provide Context</span>
+        <span class="kebab" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
+      </button>
+      <button class="row" aria-expanded="false" data-title="Use Examples" data-body="Provide examples to mimic style or formatting for better quality and consistency.">
+        <span class="title">Use Examples</span>
+        <span class="kebab" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
+      </button>
+      <button class="row" aria-expanded="false" data-title="Refine Iteratively" data-body="Continuously refine your prompts based on the AI's responses for better results.">
+        <span class="title">Refine Iteratively</span>
+        <span class="kebab" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
+      </button>
+    </section>
+
+    <section class="stage">
+      <article class="bubble visible" id="bubble">
+        <h2 id="bubble-title">Break Down the Task</h2>
+        <p id="bubble-body">Instead of trying to generate an entire 10,000‑word document in one go, generate it in smaller chunks. This lets you refine each part before moving on, ensuring accuracy.</p>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    const rows = document.querySelectorAll('.row');
+    const bubble = document.getElementById('bubble');
+    const title = document.getElementById('bubble-title');
+    const body = document.getElementById('bubble-body');
+
+    rows.forEach(row => {
+      row.addEventListener('click', () => {
+        rows.forEach(r => r.setAttribute('aria-expanded', 'false'));
+        row.setAttribute('aria-expanded', 'true');
+        title.textContent = row.dataset.title;
+        body.textContent = row.dataset.body;
+        bubble.classList.add('visible');
+      });
+    });
+  </script>
+</body>
+</html>
