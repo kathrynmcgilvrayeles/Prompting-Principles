@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,15 +16,14 @@
       --darker-blue:#2e4d6b;
       --panel:#ffffff;
       --shadow:0 20px 35px rgba(16,24,40,.18);
-      --radius:18px;
     }
 
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0;
-      font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-      background: #e8eef3 url("Background.png") center/cover no-repeat fixed;
+      font-family:'Inter',sans-serif;
+      background: #e8eef3 url("Background%20(1).png") center/cover no-repeat fixed;
       color:var(--navy);
     }
 
@@ -48,7 +48,7 @@
       display:flex; align-items:center; justify-content:space-between;
       cursor:pointer;
       transition:transform .15s ease, background .2s ease;
-      outline:none; border:none;
+      border:none;
       font-weight:600;
       font-size:1.05rem;
     }
@@ -59,14 +59,12 @@
     }
 
     .title{
-      font-family:'Inter', sans-serif;
       font-weight:700;
     }
 
     .kebab{ display:inline-grid; grid-auto-flow:column; gap:6px; }
     .dot{ width:6px; height:6px; border-radius:50%; background:#fff; opacity:.85 }
 
-    /* Bubble */
     .stage{ position:relative; min-height:320px; }
     .bubble{
       position:absolute; max-width:min(720px, 80vw);
@@ -75,7 +73,7 @@
       box-shadow:var(--shadow);
       padding:26px 28px;
       opacity:0; visibility:hidden;
-      transition:opacity .18s ease, transform .18s ease, top .18s ease;
+      transition:opacity .18s ease;
     }
     .bubble.visible{ opacity:1; visibility:visible; }
 
@@ -89,7 +87,6 @@
       margin:.35rem 0;
       line-height:1.6;
       color:var(--darker-blue);
-      font-weight:400;
     }
 
     .bubble::before{
@@ -100,7 +97,6 @@
 
     @media (max-width: 900px){
       .wrap{ grid-template-columns:1fr; }
-      .stage{ min-height:280px; }
       .bubble{ position:relative; inset:auto; margin-top:8px; }
       .bubble::before{ display:none; }
     }
@@ -109,7 +105,7 @@
 <body>
   <main class="wrap">
     <section class="stack">
-      <button class="row" aria-expanded="true" data-title="Break Down the Task" data-body="Instead of trying to generate an entire 10,000‑word document in one go, generate it in smaller chunks. This lets you refine each part before moving on, ensuring accuracy.">
+      <button class="row" aria-expanded="true" data-title="Break Down the Task" data-body="Instead of trying to generate an entire 10,000-word document in one go, generate it in smaller chunks. This lets you refine each part before moving on, ensuring accuracy.">
         <span class="title">Break Down the Task</span>
         <span class="kebab" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
       </button>
@@ -134,7 +130,7 @@
     <section class="stage">
       <article class="bubble visible" id="bubble">
         <h2 id="bubble-title">Break Down the Task</h2>
-        <p id="bubble-body">Instead of trying to generate an entire 10,000‑word document in one go, generate it in smaller chunks. This lets you refine each part before moving on, ensuring accuracy.</p>
+        <p id="bubble-body">Instead of trying to generate an entire 10,000-word document in one go, generate it in smaller chunks. This lets you refine each part before moving on, ensuring accuracy.</p>
       </article>
     </section>
   </main>
