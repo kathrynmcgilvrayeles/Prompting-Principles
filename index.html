@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Prompting Principles — Interactive Bubble</title>
+  <title>Prompting Principles — Interactive Bubble (Fixed)</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root{
@@ -22,22 +22,20 @@
     body{
       margin:0;
       font-family:'Inter',sans-serif;
-      background: #e8eef3 url("Background%20(1).png") center/cover no-repeat fixed;
+      background:#e8eef3 url("Background%20(1).png") center/cover no-repeat fixed;
       color:var(--navy);
     }
 
     .wrap{
       min-height:100vh;
       display:grid;
-      grid-template-columns: minmax(280px,420px) 1fr;
+      grid-template-columns:minmax(280px,420px) 1fr;
       gap:24px;
       align-items:start;
       padding:42px clamp(16px,6vw,56px);
     }
 
-    .stack{
-      display:flex; flex-direction:column; gap:18px;
-    }
+    .stack{ display:flex; flex-direction:column; gap:18px; }
 
     .row{
       background:var(--darker-blue);
@@ -52,10 +50,7 @@
       font-size:1.05rem;
     }
     .row:hover{ transform:translateY(-2px); background:var(--cyan); color:var(--navy); }
-    .row[aria-expanded="true"]{
-      background:var(--pink);
-      color:#fff;
-    }
+    .row[aria-expanded="true"]{ background:var(--pink); color:#fff; }
 
     .title{ font-weight:700; }
     .kebab{ display:inline-grid; grid-auto-flow:column; gap:6px; }
@@ -74,17 +69,8 @@
     }
     .bubble.visible{ opacity:1; visibility:visible; }
 
-    .bubble h2{
-      margin:.1rem 0 .6rem;
-      font-size:clamp(20px,2.2vw,28px);
-      font-weight:800;
-      color:var(--navy);
-    }
-    .bubble p{
-      margin:.35rem 0;
-      line-height:1.6;
-      color:var(--darker-blue);
-    }
+    .bubble h2{ margin:.1rem 0 .6rem; font-size:clamp(20px,2.2vw,28px); font-weight:800; color:var(--navy); }
+    .bubble p{ margin:.35rem 0; line-height:1.6; color:var(--darker-blue); }
 
     .bubble::before{
       content:""; position:absolute; left:-14px; top:28px;
@@ -92,7 +78,7 @@
       filter:drop-shadow(-2px 2px 2px rgba(16,24,40,.15));
     }
 
-    @media (max-width: 900px){
+    @media (max-width:900px){
       .wrap{ grid-template-columns:1fr; }
       .bubble{ position:relative; inset:auto; margin-top:8px; }
       .bubble::before{ display:none; }
@@ -102,23 +88,38 @@
 <body>
   <main class="wrap">
     <section class="stack">
-      <button class="row" aria-expanded="true" data-title="Break Down the Task" data-body="Instead of trying to generate an entire 10,000-word document in one go, generate it in smaller, manageable chunks (e.g., introduction, individual chapters, sub-sections). This allows you to review and refine each part before moving on, ensuring consistency and accuracy.">
+      <button class="row" aria-expanded="true"
+        data-title='Break Down the Task'
+        data-body='Instead of trying to generate an entire 10,000-word document in one go, generate it in smaller, manageable chunks (e.g., introduction, individual chapters, sub-sections). This allows you to review and refine each part before moving on, ensuring consistency and accuracy.'>
         <span class="title">Break Down the Task</span>
         <span class="kebab" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
       </button>
-      <button class="row" aria-expanded="false" data-title="Sequential Prompting" data-body="Build your document iteratively. Generate an introduction, then use that introduction as context for generating the first body paragraph, and so on. This "chain of thought" approach helps the AI maintain coherence and flow across the entire document.">
+
+      <!-- FIX: use single-quoted data-body and escape apostrophes to avoid breaking attributes -->
+      <button class="row" aria-expanded="false"
+        data-title='Sequential Prompting'
+        data-body='Build your document iteratively. Generate an introduction, then use that introduction as context for generating the first body paragraph, and so on. This &quot;chain of thought&quot; approach helps the AI maintain coherence and flow across the entire document.'>
         <span class="title">Sequential Prompting</span>
         <span class="kebab" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
       </button>
-      <button class="row" aria-expanded="false" data-title="Provide Context" data-body="For each subsequent section you generate, feed the AI the previous sections as context. This helps the AI understand the ongoing narrative and avoid repetition or contradiction. You can use phrases like, "Building on the previous section about [topic], now write a detailed analysis of [new topic]...">
+
+      <button class="row" aria-expanded="false"
+        data-title='Provide Context'
+        data-body='For each subsequent section you generate, feed the AI the previous sections as context. This helps the AI understand the ongoing narrative and avoid repetition or contradiction. You can use phrases like, &quot;Building on the previous section about [topic], now write a detailed analysis of [new topic]...&quot;'>
         <span class="title">Provide Context</span>
         <span class="kebab" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
       </button>
-      <button class="row" aria-expanded="false" data-title="Use Examples" data-body="If you have a specific style or formatting you want the AI to mimic, provide a few examples in your prompt. This can significantly improve the quality and consistency of the output.">
+
+      <button class="row" aria-expanded="false"
+        data-title='Use Examples'
+        data-body='If you have a specific style or formatting you want the AI to mimic, provide a few examples in your prompt. This can significantly improve the quality and consistency of the output.'>
         <span class="title">Use Examples</span>
         <span class="kebab" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
       </button>
-      <button class="row" aria-expanded="false" data-title="Refine Iteratively" data-body="Don't expect perfection on the first try. Continuously refine your prompts based on the AI's responses. If an output isn't quite right, adjust your prompt and try again.">
+
+      <button class="row" aria-expanded="false"
+        data-title='Refine Iteratively'
+        data-body='Don&#39;t expect perfection on the first try. Continuously refine your prompts based on the AI&#39;s responses. If an output isn&#39;t quite right, adjust your prompt and try again.'>
         <span class="title">Refine Iteratively</span>
         <span class="kebab" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
       </button>
@@ -137,23 +138,26 @@
     const bubble = document.getElementById('bubble');
     const title = document.getElementById('bubble-title');
     const body = document.getElementById('bubble-body');
+    const stage = document.querySelector('.stage');
+
+    function clamp(value, min, max){ return Math.min(Math.max(value, min), max); }
 
     rows.forEach(row => {
       row.addEventListener('click', () => {
         rows.forEach(r => r.setAttribute('aria-expanded', 'false'));
         row.setAttribute('aria-expanded', 'true');
         title.textContent = row.dataset.title;
-        body.textContent = row.dataset.body;
+        body.innerHTML = row.dataset.body; // allow &quot; etc to render
         bubble.classList.add('visible');
 
-        // Move bubble to align vertically with clicked heading
+        // Align bubble with clicked heading, clamped to stage height
         const rowRect = row.getBoundingClientRect();
-        const stageRect = document.querySelector('.stage').getBoundingClientRect();
-        const offsetTop = rowRect.top - stageRect.top;
-        bubble.style.top = offsetTop + 'px';
+        const stageRect = stage.getBoundingClientRect();
+        const desiredTop = rowRect.top - stageRect.top;
+        const maxTop = stage.scrollHeight - bubble.offsetHeight; // keep inside
+        bubble.style.top = clamp(desiredTop, 0, Math.max(0, maxTop)) + 'px';
       });
     });
   </script>
 </body>
 </html>
-
